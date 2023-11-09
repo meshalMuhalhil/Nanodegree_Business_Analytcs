@@ -1,0 +1,58 @@
+
+‪''' Total sales query per music category: '''‬
+
+``‪ ‬`‪ ‬
+‏SELECT Genre.Name, SUM(InvoiceLine.UnitPrice * InvoiceLine.Quantity) AS TotalSales
+‏FROM Genre
+‏JOIN Track ON Genre.GenreId = Track.GenreId
+‏JOIN InvoiceLine ON Track.TrackId = InvoiceLine.TrackId
+‏GROUP BY Genre.Name;
+
+```
+
+' ' ' Best Selling Albums  ' ' '
+
+' ' '
+‏SELECT Album.Title, COUNT(InvoiceLine.InvoiceLineId) AS SalesCount
+‏FROM Album
+‏JOIN Track ON Album.AlbumId = Track.AlbumId
+‏JOIN InvoiceLine ON Track.TrackId = InvoiceLine.TrackId
+‏GROUP BY Album.AlbumId
+‏ORDER BY SalesCount DESC;
+' ' '
+
+' ' ' Total sales by country ' ' '
+' ' '
+‏SELECT Invoice.BillingCountry AS Country, SUM(Invoice.Total) AS TotalSales
+‏FROM Invoice
+‏GROUP BY Invoice.BillingCountry
+‏ORDER BY TotalSales DESC;
+' ' '
+
+
+' ' '  Who are the top 5 most popular artists based on the number of songs?  ' ' '
+
+' ' ' 
+
+‏SELECT Artist.Name, COUNT(Track.TrackId) AS TotalTracks
+‏FROM Artist
+‏JOIN Album ON Artist.ArtistId = Album.ArtistId
+‏JOIN Track ON Album.AlbumId = Track.AlbumId
+‏GROUP BY Artist.Name
+‏ORDER BY TotalTracks DESC
+‏LIMIT 5;
+‪'‬ ' ' 
+
+
+‪'‬ ' '  Who are the most competent employees ? ' ' ' 
+
+' ' ' 
+SELECT Employee.EmployeeId,Employee.FirstName,Employee.LastName,
+       sum(Invoice.Total ) AS TotalAmount
+FROM Employee 
+JOIN Customer ON Employee.EmployeeId = Customer.SupportRepId
+JOIN Invoice  ON Customer.CustomerId = Invoice.CustomerId
+GROUP by 1,2,3
+
+' ' ' 
+
